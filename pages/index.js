@@ -64,7 +64,9 @@ function RichMessage({ content }) {
           return (
             <p className="list-item" key={index}>
               <span>&bull;</span>
-              <InlineText text={trimmed.slice(2)} />
+              <span className="list-content">
+                <InlineText text={trimmed.slice(2)} />
+              </span>
             </p>
           );
         const numbered = trimmed.match(/^(\d+)\. (.*)$/);
@@ -72,7 +74,9 @@ function RichMessage({ content }) {
           return (
             <p className="list-item numbered" key={index}>
               <span>{numbered[1]}.</span>
-              <InlineText text={numbered[2]} />
+              <span className="list-content">
+                <InlineText text={numbered[2]} />
+              </span>
             </p>
           );
         return (

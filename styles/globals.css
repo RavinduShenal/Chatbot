@@ -539,6 +539,9 @@ kbd {
   color: #fff;
 }
 .rich-message code {
+  display: inline;
+  width: fit-content;
+  height: fit-content;
   padding: 2px 5px;
   color: #5343c8;
   background: #e2ddff;
@@ -554,10 +557,17 @@ kbd {
 .rich-message .list-item {
   display: flex;
   gap: 8px;
+  align-items: flex-start;
 }
 .rich-message .list-item > span {
   color: #7a69df;
   font-weight: 600;
+}
+.rich-message .list-item > .list-content {
+  flex: 1;
+  min-width: 0;
+  color: inherit;
+  font-weight: inherit;
 }
 .composer button {
   background: linear-gradient(145deg, #7668ed, #5545ca);
