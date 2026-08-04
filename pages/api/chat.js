@@ -62,7 +62,7 @@ export default async function handler(req, res) {
           generationConfig: {
             // Temperature balances consistency with natural phrasing; the token limit prevents runaway answers.
             temperature: 0.7,
-            maxOutputTokens: 5000,
+            maxOutputTokens: 1024,
           },
         }),
       }
