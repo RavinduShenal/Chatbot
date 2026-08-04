@@ -1,0 +1,15 @@
+# dependencies
+/node_modules
+
+# next.js build output
+/.next/
+/out/
+
+# env files - NEVER commit these, they hold your real API key
+.env
+.env.local
+.env*.local
+
+# misc
+.DS_Store
+npm-debug.log*
