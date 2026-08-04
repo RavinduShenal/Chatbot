@@ -630,30 +630,65 @@ body,
     monospace;
   letter-spacing: 1px;
 }
-.recent-chats button {
+.recent-chat {
   display: flex;
   align-items: center;
-  gap: 8px;
   width: 100%;
   overflow: hidden;
-  padding: 8px;
+  padding: 2px 4px;
+  border-radius: 7px;
+}
+.recent-chat:hover,
+.recent-chat.active {
+  background: #eae6ff;
+}
+.recent-chats .chat-title {
+  min-width: 0;
+  flex: 1;
+  overflow: hidden;
+  padding: 6px 4px;
   color: #70738d;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   background: transparent;
   border: 0;
-  border-radius: 7px;
   font-size: 11px;
 }
-.recent-chats button:hover,
-.recent-chats button.active {
+.recent-chat:hover .chat-title,
+.recent-chat.active .chat-title {
   color: #4e43bd;
-  background: #eae6ff;
 }
-.recent-chats button span {
+.recent-chats .chat-title span {
   color: #8a7de5;
   font-size: 8px;
+}
+.delete-chat {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  flex: 0 0 18px;
+  place-items: center;
+  padding: 0;
+  color: #8c86a8;
+  background: transparent;
+  border: 0;
+  border-radius: 5px;
+  font-size: 17px;
+  line-height: 1;
+}
+.delete-chat:hover:not(:disabled),
+.delete-chat:focus-visible {
+  color: #fff;
+  background: #c15d73;
+}
+.delete-chat:focus-visible {
+  outline: 2px solid #a89ee7;
+  outline-offset: 1px;
+}
+.delete-chat:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
 }
 .new-chat {
   background: linear-gradient(110deg, #5142c8 0%, #785ce4 65%, #d56692 145%);
@@ -820,14 +855,18 @@ body,
 }
 
 [data-theme="dark"] .privacy-card strong,
-[data-theme="dark"] .recent-chats button {
+[data-theme="dark"] .recent-chats .chat-title {
   color: #c7c2da;
 }
 
-[data-theme="dark"] .recent-chats button:hover,
-[data-theme="dark"] .recent-chats button.active {
-  color: #eeeaff;
+[data-theme="dark"] .recent-chat:hover,
+[data-theme="dark"] .recent-chat.active {
   background: #39335c;
+}
+
+[data-theme="dark"] .recent-chat:hover .chat-title,
+[data-theme="dark"] .recent-chat.active .chat-title {
+  color: #eeeaff;
 }
 
 .theme-toggle {

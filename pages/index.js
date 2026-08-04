@@ -196,6 +196,19 @@ export default function Home() {
     inputRef.current?.focus();
   }
 
+  function deleteConversation(id) {
+    // Keep deletion deliberate because chats are stored only in this browser.
+    if (loading || !window.confirm("Delete this conversation? This cannot be undone."))
+      return;
+
+    const remaining = conversations.filter((conversation) => conversation.id !== id);
+    setConversations(remaining);
+    if (id === activeConversationId) {
+      setActiveConversationId(remaining[0]?.id ?? null);
+      setError(null);
+    }
+  }
+
   async function sendMessage(text) {
     // This function is used by both the form and the suggested prompt buttons.
     const content = (text ?? input).trim();
@@ -305,18 +318,32 @@ export default function Home() {
             <nav className="recent-chats" aria-label="Recent conversations">
               <p>RECENT CHATS</p>
               {recentConversations.map((conversation) => (
-                <button
+                <div
                   key={conversation.id}
-                  type="button"
-                  className={
+                  className={`recent-chat ${
                     conversation.id === activeConversationId ? "active" : ""
-                  }
+                  }`}
+                >
+                <button
+                  type="button"
+                  className="delete-chat"
+                  onClick={() => deleteConversation(conversation.id)}
+                  disabled={loading}
+                  aria-label={`Delete ${conversation.title}`}
+                  title="Delete conversation"
+                >
+                  &times;
+                </button>
+                <button
+                  type="button"
+                  className="chat-title"
                   onClick={() => selectConversation(conversation.id)}
                   title={conversation.title}
                 >
                   <span>&#9670;</span>
                   {conversation.title}
                 </button>
+                </div>
               ))}
             </nav>
           )}
