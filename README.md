@@ -60,7 +60,7 @@ Open `.env.local` and replace the placeholder value:
 
 ```dotenv
 GEMINI_API_KEY=your-real-key-goes-here
-GEMINI_MODEL=gemini-2.5-flash
+GEMINI_MODEL=gemini-3.5-flash
 ```
 
 `GEMINI_MODEL` is optional; the application uses `gemini-2.5-flash` if it is omitted.
@@ -109,7 +109,7 @@ The first command should show that `.env.local` is ignored. The second should no
 
    ```text
    GEMINI_API_KEY = your real Gemini API key
-   GEMINI_MODEL   = gemini-2.5-flash  (optional)
+   GEMINI_MODEL   = gemini-3.5-flash  (optional)
    ```
 
 4. Select the environments you intend to deploy to (at minimum, Production), then deploy.
