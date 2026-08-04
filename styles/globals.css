@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap");
 
 :root {
+  /* Shared design tokens used by the light theme. */
   --ink: #212444;
   --muted: #777b98;
   --line: #e9e7f0;
@@ -29,6 +30,7 @@ button {
   cursor: pointer;
 }
 .app-shell {
+  /* The app fills the viewport so only .conversation becomes scrollable. */
   min-height: 100svh;
   display: flex;
   background:
@@ -36,6 +38,7 @@ button {
     var(--paper);
 }
 .sidebar {
+  /* This column stays visually fixed while the chat content scrolls. */
   width: 255px;
   display: flex;
   flex-direction: column;
@@ -44,6 +47,7 @@ button {
   background: #fffefa99;
 }
 .brand {
+  /* Product identity shown at the top of the fixed sidebar. */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -88,6 +92,7 @@ button {
   height: 7px;
 }
 .new-chat {
+  /* Primary action: creates a separate browser-local conversation. */
   margin-top: 43px;
   border: 0;
   border-radius: 10px;
@@ -149,6 +154,7 @@ button {
     monospace;
 }
 .workspace {
+  /* Flexible main column that holds the header, messages, and composer. */
   width: min(850px, calc(100% - 255px));
   min-height: 100svh;
   margin: 0 auto;
@@ -178,6 +184,7 @@ button {
   letter-spacing: -1.2px;
 }
 .conversation {
+  /* This is the single scrolling region on desktop. */
   flex: 1;
   overflow: auto;
   min-height: 385px;
@@ -186,6 +193,7 @@ button {
   padding: 38px 0 20px;
 }
 .welcome {
+  /* Empty-state content is vertically centered until a chat starts. */
   margin: auto 0;
   padding-bottom: 17px;
   text-align: center;
@@ -233,6 +241,7 @@ button {
   line-height: 1.65;
 }
 .prompt-grid {
+  /* Three suggested prompts become a single column on smaller screens. */
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 10px;
@@ -291,6 +300,7 @@ button {
   font-weight: 400;
 }
 .message-list {
+  /* Vertical list of all messages in the currently selected conversation. */
   display: flex;
   flex-direction: column;
   gap: 21px;
@@ -303,6 +313,7 @@ button {
   max-width: 84%;
 }
 .message.user {
+  /* User messages align to the right to distinguish them from AI responses. */
   align-self: flex-end;
   flex-direction: row-reverse;
 }
@@ -339,6 +350,7 @@ button {
   border-radius: 15px 4px 15px 15px;
 }
 .thinking {
+  /* Three pulsing dots communicate that a reply is on its way. */
   display: flex;
   gap: 5px;
   align-items: center;
@@ -365,6 +377,7 @@ button {
   }
 }
 .error {
+  /* Recoverable error panel shown without discarding the current conversation. */
   display: flex;
   align-items: flex-start;
   gap: 10px;
@@ -401,6 +414,7 @@ button {
   background: transparent;
 }
 .composer {
+  /* Input control is kept outside the scrollable message area. */
   display: flex;
   align-items: center;
   gap: 10px;
@@ -725,6 +739,7 @@ body,
 }
 
 [data-theme="dark"] {
+  /* Theme variables switch colors without changing component markup. */
   --ink: #f4f2ff;
   --muted: #aaa8c0;
   --line: #353451;
@@ -806,6 +821,7 @@ body,
 }
 
 .theme-toggle {
+  /* Compact, keyboard-accessible sun/moon theme control. */
   width: 55px;
   height: 30px;
   padding: 2px;

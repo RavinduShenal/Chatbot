@@ -1,8 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import Head from "next/head";
 
+// Keys used to keep each browser's chats and appearance preference separate.
 const STORAGE_KEY = "bench-conversations-v1";
 const THEME_KEY = "bench-theme-v1";
+
+// Suggested prompts shown before a conversation begins.
 const STARTER_PROMPTS = [
   {
     label: "Understand a concept",
@@ -22,6 +25,7 @@ const STARTER_PROMPTS = [
 ];
 
 function InlineText({ text }) {
+  // Render the small Markdown subset returned by Gemini without adding a library.
   return text.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).map((part, index) => {
     if (part.startsWith("**") && part.endsWith("**"))
       return <strong key={index}>{part.slice(2, -2)}</strong>;
@@ -32,6 +36,7 @@ function InlineText({ text }) {
 }
 
 function RichMessage({ content }) {
+  // Turn headings, lists, bold text, and inline code into readable chat content.
   return (
     <div className="rich-message">
       {content.split("\n").map((line, index) => {
@@ -81,6 +86,7 @@ function RichMessage({ content }) {
 }
 
 function newConversation() {
+  // Conversations are intentionally browser-local; no database or account is required.
   return {
     id: crypto.randomUUID(),
     title: "New conversation",
@@ -90,6 +96,7 @@ function newConversation() {
 }
 
 export default function Home() {
+  // Conversation history and the selected chat are persisted in localStorage.
   const [conversations, setConversations] = useState([]);
   const [activeConversationId, setActiveConversationId] = useState(null);
   const [isReady, setIsReady] = useState(false);
@@ -97,8 +104,10 @@ export default function Home() {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  // Refs provide access to the scroll area and message field without re-rendering.
   const scrollRef = useRef(null);
   const inputRef = useRef(null);
+  // Derived values keep the JSX below simple and avoid duplicated state.
   const activeConversation = conversations.find(
     (conversation) => conversation.id === activeConversationId,
   );
@@ -108,6 +117,7 @@ export default function Home() {
     .slice(0, 5);
 
   useEffect(() => {
+    // Restore previously saved chats and use a saved (or system) color preference.
     try {
       const saved = JSON.parse(
         window.localStorage.getItem(STORAGE_KEY) || "[]",
@@ -135,15 +145,18 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Save every chat update after the initial browser-only hydration is complete.
     if (isReady)
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
   }, [conversations, isReady]);
 
   useEffect(() => {
+    // Remember the user's manual light/dark choice for their next visit.
     if (isReady) window.localStorage.setItem(THEME_KEY, theme);
   }, [theme, isReady]);
 
   useEffect(() => {
+    // Keep the latest message in view; the sidebar and composer stay fixed.
     scrollRef.current?.scrollTo({
       top: scrollRef.current.scrollHeight,
       behavior: "smooth",
@@ -151,6 +164,7 @@ export default function Home() {
   }, [messages, loading]);
 
   function updateConversation(id, update) {
+    // Updating a chat also moves it to the top of the recent-chat list.
     setConversations((current) =>
       current
         .map((conversation) =>
@@ -161,12 +175,14 @@ export default function Home() {
   }
 
   function selectConversation(id) {
+    // Avoid changing chats while an answer is being generated for the current one.
     if (loading) return;
     setActiveConversationId(id);
     setError(null);
   }
 
   function startNewConversation() {
+    // A new empty conversation is kept separately so older chats are never overwritten.
     if (loading) return;
     const conversation = newConversation();
     setConversations((current) => [conversation, ...current]);
@@ -177,12 +193,14 @@ export default function Home() {
   }
 
   async function sendMessage(text) {
+    // This function is used by both the form and the suggested prompt buttons.
     const content = (text ?? input).trim();
     if (!content || loading) return;
 
     let conversationId = activeConversationId;
     let currentMessages = messages;
     if (!conversationId) {
+      // The first message automatically creates a conversation if one is not selected.
       const conversation = newConversation();
       conversationId = conversation.id;
       setConversations((current) => [conversation, ...current]);
@@ -190,11 +208,13 @@ export default function Home() {
       currentMessages = [];
     }
 
+    // Update the UI immediately, then send the conversation to the server route.
     const nextMessages = [
       ...currentMessages,
       { id: crypto.randomUUID(), role: "user", content },
     ];
     updateConversation(conversationId, (conversation) => ({
+      // The first question becomes a short title in the recent-chat sidebar.
       ...conversation,
       title: conversation.messages.length
         ? conversation.title
@@ -207,6 +227,7 @@ export default function Home() {
     setLoading(true);
 
     try {
+      // The browser talks only to our server route; Gemini credentials never reach it.
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -219,6 +240,7 @@ export default function Home() {
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Request failed");
+      // Add the server's reply to the same conversation that sent the request.
       updateConversation(conversationId, (conversation) => ({
         ...conversation,
         messages: [
@@ -228,6 +250,7 @@ export default function Home() {
         updatedAt: Date.now(),
       }));
     } catch (err) {
+      // Keep the user's message visible and show a recoverable error below the chat.
       setError(err.message || "Unable to get a reply right now.");
     } finally {
       setLoading(false);
@@ -236,10 +259,12 @@ export default function Home() {
   }
 
   function handleSubmit(event) {
+    // Prevent the browser's default page reload when the form is submitted.
     event.preventDefault();
     sendMessage();
   }
   function handleKeyDown(event) {
+    // Enter sends; Shift + Enter remains available for multi-line messages.
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       sendMessage();
@@ -253,6 +278,7 @@ export default function Home() {
         <meta name="description" content="A thoughtful AI chat workspace." />
       </Head>
       <main className="app-shell" data-theme={theme}>
+        {/* Fixed sidebar: branding, new-chat control, saved conversations, and privacy note. */}
         <aside className="sidebar">
           <a className="brand" href="#top" aria-label="Bench home">
             <span className="brand-symbol">
@@ -271,6 +297,7 @@ export default function Home() {
             <span>+</span> New conversation
           </button>
           {recentConversations.length > 0 && (
+            /* Browser-local chats can be selected again from this compact history list. */
             <nav className="recent-chats" aria-label="Recent conversations">
               <p>RECENT CHATS</p>
               {recentConversations.map((conversation) => (
@@ -299,12 +326,14 @@ export default function Home() {
             <p className="sidebar-note">Chats are saved in this browser</p>
           </div>
         </aside>
+        {/* Main workspace: header, scrollable messages, feedback state, and composer. */}
         <section className="workspace" id="top">
           <header className="topbar">
             <div>
               <p className="kicker">YOUR AI THINKING PARTNER</p>
               <h1>What are we working through?</h1>
             </div>
+            {/* Animated sun/moon switch; the selection is saved in localStorage. */}
             <button
               className="theme-toggle"
               type="button"
@@ -328,6 +357,7 @@ export default function Home() {
             ref={scrollRef}
             aria-live="polite"
           >
+            {/* Show helpful prompt ideas before the first message, otherwise show the active chat. */}
             {messages.length === 0 ? (
               <section className="welcome">
                 <div className="welcome-orb">
@@ -360,6 +390,7 @@ export default function Home() {
               </section>
             ) : (
               <div className="message-list">
+                {/* Each saved message is rendered with a different alignment for its sender. */}
                 {messages.map((message) => (
                   <article
                     key={message.id}
@@ -383,6 +414,7 @@ export default function Home() {
                   </article>
                 ))}
                 {loading && (
+                  /* Visual feedback while the API route is waiting for Gemini. */
                   <article className="message assistant">
                     <div className="assistant-mark">
                       <i />
@@ -403,6 +435,7 @@ export default function Home() {
             )}
           </div>
           {error && (
+            /* API or network failures do not erase the conversation; they show here instead. */
             <div className="error" role="alert">
               <span>!</span>
               <div>
@@ -419,6 +452,7 @@ export default function Home() {
             </div>
           )}
           <form className="composer" onSubmit={handleSubmit}>
+            {/* The form supports click-to-send and keyboard-to-send. */}
             <textarea
               ref={inputRef}
               value={input}
