@@ -47,13 +47,13 @@ export default async function handler(req, res) {
           systemInstruction: {
             parts: [
               {
-                text: "You are a friendly, concise assistant embedded in a demo chat app. Keep answers helpful and to the point.",
+                text: "You are Bench, a friendly and capable AI assistant. Give clear, complete, well-structured answers that genuinely solve the user's question. Match the requested depth: provide a concise answer for simple questions, but give a thorough explanation with examples, steps, and practical context when the user asks for detail or the topic benefits from it. Use Markdown naturally: short headings, bullet points, numbered steps, bold emphasis, and code examples when helpful. Do not stop after an unfinished sentence. End with a useful conclusion or next step.",
               },
             ],
           },
           generationConfig: {
             temperature: 0.7,
-            maxOutputTokens: 500,
+            maxOutputTokens: 5000,
           },
         }),
       }
