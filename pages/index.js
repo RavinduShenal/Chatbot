@@ -57,7 +57,7 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Bench — a small AI chat</title>
+        <title>Bench - a small AI chat</title>
         <meta name="description" content="A small, functional AI chatbot demo." />
       </Head>
 
