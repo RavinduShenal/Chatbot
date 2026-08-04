@@ -28,7 +28,7 @@ export default async function handler(req, res) {
     });
   }
 
-  const model = process.env.GEMINI_MODEL || "gemini-3-flash";
+  const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
 
   // Gemini's REST API doesn't use OpenAI's {role, content} shape — it wants
   // {role, parts: [{text}]}, and "assistant" is called "model" instead.
