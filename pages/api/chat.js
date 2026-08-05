@@ -2,6 +2,7 @@
 
 const SYSTEM_PROMPT =
   "You are Bench, a friendly and capable AI assistant. Give clear, complete, well-structured answers that genuinely solve the user's question. Match the requested depth: provide a concise answer for simple questions, but give a thorough explanation with examples, steps, and practical context when the user asks for detail or the topic benefits from it. Use Markdown naturally: short headings, bullet points, numbered steps, bold emphasis, and code examples when helpful. Do not stop after an unfinished sentence. End with a useful conclusion or next step.";
+const PROVIDER_TIMEOUT_MS = 25_000;
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -23,6 +24,8 @@ export default async function handler(req, res) {
   }
 
   const model = process.env.NVIDIA_MODEL || "meta/llama-3.2-3b-instruct";
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), PROVIDER_TIMEOUT_MS);
 
   try {
     // NVIDIA NIM provides an OpenAI-compatible Chat Completions endpoint.
@@ -34,6 +37,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`,
         },
+        signal: controller.signal,
         body: JSON.stringify({
           model,
           messages: [{ role: "system", content: SYSTEM_PROMPT }, ...messages],
@@ -59,9 +63,17 @@ export default async function handler(req, res) {
 
     return res.status(200).json({ reply });
   } catch (err) {
+    if (err.name === "AbortError") {
+      console.error(`NVIDIA API timed out after ${PROVIDER_TIMEOUT_MS}ms`);
+      return res.status(504).json({
+        error: "The AI provider is taking too long to respond. Please try again shortly.",
+      });
+    }
     console.error("Chat API route failed:", err);
     return res.status(500).json({
       error: "Something went wrong talking to the AI provider.",
     });
+  } finally {
+    clearTimeout(timeout);
   }
 }
