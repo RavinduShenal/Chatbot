@@ -973,90 +973,6 @@ body,
   }
 }
 
-/* Career141-inspired brand treatment. These overrides preserve the existing layout. */
-:root {
-  --ink: #181719;
-  --muted: #777174;
-  --line: #e8e2e3;
-  --paper: #fdfcfc;
-  --violet: #d72648;
-  --violet-soft: #fce9ed;
-  --peach: #fff0eb;
-  --mint: #e3f3ed;
-}
-
-.app-shell {
-  background:
-    radial-gradient(circle at 76% 2%, #f9e9ec 0, transparent 31%),
-    radial-gradient(circle at 96% 90%, #fff0eb 0, transparent 24%), #fdfcfc;
-}
-
-.sidebar {
-  background: linear-gradient(160deg, #fff 0%, #fbf7f8 62%, #fff5ef 100%);
-}
-
-.brand-number,
-.kicker,
-.welcome-label {
-  color: #d72648;
-}
-
-.new-chat,
-.composer button {
-  background: linear-gradient(110deg, #bd1636, #e44962 70%, #f37755);
-}
-
-.new-chat {
-  box-shadow: 0 7px 19px #c21d3d35;
-}
-
-.welcome-orb {
-  background: linear-gradient(145deg, #d72648, #bd1636 62%, #f37755);
-  box-shadow: 0 12px 28px #c21d3d35;
-}
-
-.prompt-card:nth-child(1) .prompt-icon,
-.prompt-card:nth-child(2) .prompt-icon,
-.prompt-card:nth-child(3) .prompt-icon {
-  color: #bd1636;
-  background: #fce9ed;
-}
-
-.recent-chat:hover,
-.recent-chat.active {
-  background: #fce9ed;
-}
-
-.recent-chat:hover .chat-title,
-.recent-chat.active .chat-title,
-.recent-chats .chat-title span {
-  color: #bd1636;
-}
-
-[data-theme="dark"] {
-  --ink: #f8f5f5;
-  --muted: #bbb1b4;
-  --line: #44383b;
-  --paper: #191719;
-  --violet: #f06b81;
-  --violet-soft: #442a31;
-}
-
-[data-theme="dark"].app-shell {
-  background:
-    radial-gradient(circle at 76% 2%, #43212a 0, transparent 31%),
-    radial-gradient(circle at 96% 90%, #3a2621 0, transparent 24%), #191719;
-}
-
-[data-theme="dark"] .sidebar {
-  background: linear-gradient(160deg, #211c1e 0%, #1a1718 62%, #2d1d1d 100%);
-}
-
-[data-theme="dark"] .recent-chat:hover,
-[data-theme="dark"] .recent-chat.active {
-  background: #492d35;
-}
-
 @media (max-width: 960px) {
   .sidebar {
     width: 220px;
@@ -1090,9 +1006,6 @@ body,
     padding: 14px 16px;
     background: #fffdfdf2;
     border-bottom: 1px solid var(--line);
-  }
-  [data-theme="dark"] .sidebar {
-    background: #1c181aeF;
   }
   .brand {
     font-size: 22px;

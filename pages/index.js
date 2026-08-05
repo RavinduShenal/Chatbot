@@ -306,7 +306,7 @@ export default function Home() {
               <i />
               <i />
             </span>
-            <span>career<span className="brand-number">141</span></span>
+            <span>Career141</span>
           </a>
           <button
             className="new-chat"
