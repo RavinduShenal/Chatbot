@@ -8,19 +8,19 @@ const THEME_KEY = "bench-theme-v1";
 // Suggested prompts shown before a conversation begins.
 const STARTER_PROMPTS = [
   {
-    label: "Understand a concept",
-    prompt: "Explain closures in JavaScript with a simple real-world example.",
-    icon: "{}",
+    label: "Explore opportunities",
+    prompt: "Help me identify the right next step in my career search.",
+    icon: "↗",
   },
   {
-    label: "Plan something",
-    prompt: "Give me a thoughtful 3-day itinerary for Kandy, Sri Lanka.",
-    icon: "+",
+    label: "Prepare for an interview",
+    prompt: "Help me prepare for a senior-level job interview.",
+    icon: "?",
   },
   {
-    label: "Improve my work",
-    prompt: "What's a clean way to structure a Next.js API route?",
-    icon: "*",
+    label: "Find the right talent",
+    prompt: "What should I consider when hiring a senior executive?",
+    icon: "✓",
   },
 ];
 
@@ -291,19 +291,22 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Bench - a better place to think</title>
-        <meta name="description" content="A thoughtful AI chat workspace." />
+        <title>Career141 Talent Assistant</title>
+        <meta
+          name="description"
+          content="Career guidance and talent insights from Career141."
+        />
       </Head>
       <main className="app-shell" data-theme={theme}>
         {/* Fixed sidebar: branding, new-chat control, saved conversations, and privacy note. */}
         <aside className="sidebar">
-          <a className="brand" href="#top" aria-label="Bench home">
+          <a className="brand" href="#top" aria-label="Career141 home">
             <span className="brand-symbol">
               <i />
               <i />
               <i />
             </span>
-            <span>bench</span>
+            <span>career<span className="brand-number">141</span></span>
           </a>
           <button
             className="new-chat"
@@ -311,7 +314,7 @@ export default function Home() {
             onClick={startNewConversation}
             disabled={loading}
           >
-            <span>+</span> New conversation
+            <span>+</span> New chat
           </button>
           {recentConversations.length > 0 && (
             /* Browser-local chats can be selected again from this compact history list. */
@@ -351,7 +354,7 @@ export default function Home() {
             <div className="privacy-card">
               <span className="shield">&#9670;</span>
               <p>
-                <strong>Designed for you</strong>Better future ahead!
+                <strong>Career141 Talent Assistant</strong>Guidance for candidates and hiring teams.
               </p>
             </div>
             <p className="sidebar-note">Chats are saved in this browser</p>
@@ -361,8 +364,8 @@ export default function Home() {
         <section className="workspace" id="top">
           <header className="topbar">
             <div>
-              <p className="kicker">YOUR AI THINKING PARTNER</p>
-              <h1>What are we working through?</h1>
+              <p className="kicker">CAREER141 TALENT ASSISTANT</p>
+              <h1>Where opportunity meets the right talent.</h1>
             </div>
             {/* Animated sun/moon switch; the selection is saved in localStorage. */}
             <button
@@ -394,15 +397,15 @@ export default function Home() {
                 <div className="welcome-orb">
                   <span>+</span>
                 </div>
-                <p className="welcome-label">A QUIET PLACE FOR BIG QUESTIONS</p>
+                <p className="welcome-label">EXECUTIVE SEARCH &amp; RECRUITMENT</p>
                 <h2>
-                  Bring a question.
+                  Make your next move.
                   <br />
-                  Leave with momentum.
+                  Build with confidence.
                 </h2>
                 <p className="welcome-copy">
-                  Use Bench to clarify an idea, shape a plan, or find a useful
-                  next step.
+                  Explore career opportunities, prepare for interviews, or get
+                  practical guidance on finding exceptional talent.
                 </p>
                 <div className="prompt-grid">
                   {STARTER_PROMPTS.map((item) => (
@@ -436,7 +439,7 @@ export default function Home() {
                     )}
                     <div>
                       <p className="message-name">
-                        {message.role === "user" ? "You" : "Bench"}
+                        {message.role === "user" ? "You" : "Career141"}
                       </p>
                       <div className="bubble">
                         <RichMessage content={message.content} />
@@ -453,7 +456,7 @@ export default function Home() {
                       <i />
                     </div>
                     <div>
-                      <p className="message-name">Bench</p>
+                      <p className="message-name">Career141</p>
                       <p className="bubble thinking">
                         <span />
                         <span />
@@ -489,7 +492,7 @@ export default function Home() {
               value={input}
               onChange={(event) => setInput(event.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Write a question, idea, or problem..."
+              placeholder="Ask about careers, hiring, or opportunities..."
               aria-label="Your message"
               rows={1}
               disabled={loading}
