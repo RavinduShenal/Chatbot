@@ -1,17 +1,17 @@
 # Bench - AI Chatbot
 
-Bench is a small, responsive chatbot built for the Career141 technical assessment. It uses Next.js for the user interface and server-side API route, and NVIDIA NIM for AI responses.
+Bench is a small, responsive chatbot built for the Career141 technical assessment. It uses Next.js for the user interface and server-side API route, and OpenRouter for AI responses.
 
 ## Highlights
 
 - Clean chat interface with starter prompts, loading feedback, automatic scrolling, and friendly errors.
-- A server-side API route at `pages/api/chat.js`; the browser never calls NVIDIA directly.
+- A server-side API route at `pages/api/chat.js`; the browser never calls OpenRouter directly.
 - API key kept out of source control and configured separately for local and production environments.
 
 ## Tech stack
 
 - Next.js 14 and React 18
-- NVIDIA NIM API (OpenAI-compatible REST)
+- OpenRouter API (OpenAI-compatible REST)
 - Vercel (recommended deployment platform)
 
 ## Project structure
@@ -19,7 +19,7 @@ Bench is a small, responsive chatbot built for the Career141 technical assessmen
 ```text
 pages/
   index.js          # Chat interface and browser-side state
-  api/chat.js       # Server-only route that calls NVIDIA NIM
+  api/chat.js       # Server-only route that calls OpenRouter
   _app.js           # Global application wrapper
 styles/globals.css  # Responsive styles
 .env.example        # Safe configuration template
@@ -30,7 +30,7 @@ styles/globals.css  # Responsive styles
 ### Prerequisites
 
 - Node.js 18 or newer
-- An NVIDIA API key created in the [NVIDIA API Catalog](https://build.nvidia.com/explore/discover)
+- An OpenRouter API key created at [OpenRouter Keys](https://openrouter.ai/keys)
 
 ### 1. Install dependencies
 
@@ -54,18 +54,18 @@ Copy-Item .env.example .env.local
 cp .env.example .env.local
 ```
 
-### 3. Add your NVIDIA API key
+### 3. Add your OpenRouter API key
 
 Open `.env.local` and replace the placeholder value:
 
 ```dotenv
-NVIDIA_API_KEY=your-real-key-goes-here
-NVIDIA_MODEL=meta/llama-3.2-3b-instruct
+OPENROUTER_API_KEY=your-real-key-goes-here
+OPENROUTER_MODEL=openrouter/free
 ```
 
-`NVIDIA_MODEL` is optional; the application uses `meta/llama-3.2-3b-instruct` if it is omitted.
+`OPENROUTER_MODEL` is optional; the application uses `openrouter/free` if it is omitted.
 
-Important: use `.env.local` only for your real key. Do not put it in `pages/index.js`, any `NEXT_PUBLIC_*` variable, a screenshot, or a Git commit. The server route reads it using `process.env.NVIDIA_API_KEY`, so it is not included in the browser bundle.
+Important: use `.env.local` only for your real key. Do not put it in `pages/index.js`, any `NEXT_PUBLIC_*` variable, a screenshot, or a Git commit. The server route reads it using `process.env.OPENROUTER_API_KEY`, so it is not included in the browser bundle.
 
 ### 4. Start the app
 
@@ -75,21 +75,21 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000), send a message, and confirm you receive a response.
 
-If the chat shows a missing-key error, confirm that `.env.local` is in the repository root, the variable is named exactly `NVIDIA_API_KEY`, and restart `npm run dev` after editing the file.
+If the chat shows a missing-key error, confirm that `.env.local` is in the repository root, the variable is named exactly `OPENROUTER_API_KEY`, and restart `npm run dev` after editing the file.
 
 ## API-key security
 
 The security boundary is intentional and easy to review:
 
 ```text
-Browser -> POST /api/chat -> NVIDIA NIM API
+Browser -> POST /api/chat -> OpenRouter API
                  |
-                 +-> reads NVIDIA_API_KEY only on the server
+                 +-> reads OPENROUTER_API_KEY only on the server
 ```
 
 - `.env.local` is excluded by `.gitignore` and must never be committed.
 - `.env.example` contains placeholders only and is safe to commit.
-- `pages/api/chat.js` is the only file that reads `NVIDIA_API_KEY`.
+- `pages/api/chat.js` is the only file that reads `OPENROUTER_API_KEY`.
 - The browser sends messages to `/api/chat`; it does not receive or use the provider key.
 
 Before committing, run this check (after Git is installed):
@@ -99,7 +99,7 @@ git check-ignore -v .env.local
 git status
 ```
 
-The first command should show that `.env.local` is ignored. The second should not list `.env.local`. If a key is ever committed, revoke it in the NVIDIA API Catalog, generate a replacement, update the deployment environment variable, and remove it from Git history before making the repository public.
+The first command should show that `.env.local` is ignored. The second should not list `.env.local`. If a key is ever committed, revoke it in OpenRouter, generate a replacement, update the deployment environment variable, and remove it from Git history before making the repository public.
 
 ## Deploy to Vercel
 
@@ -108,8 +108,8 @@ The first command should show that `.env.local` is ignored. The second should no
 3. In **Project Settings -> Environment Variables**, add:
 
    ```text
-   NVIDIA_API_KEY = your real NVIDIA API key
-   NVIDIA_MODEL   = meta/llama-3.2-3b-instruct  (optional)
+   OPENROUTER_API_KEY = your real OpenRouter API key
+   OPENROUTER_MODEL   = openrouter/free  (optional)
    ```
 
 4. Select the environments you intend to deploy to (at minimum, Production), then deploy.
@@ -128,6 +128,6 @@ Do not upload `.env.local` to Vercel or place the secret in a Vercel build comma
   ```text
   chore: initialize Next.js chatbot project
   feat: build responsive chat interface
-  feat: add secure NVIDIA NIM API route
+  feat: add secure OpenRouter API route
   docs: document setup and deployment
   ```
